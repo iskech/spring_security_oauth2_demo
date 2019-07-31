@@ -1,0 +1,16 @@
+
+security:
+  oauth2:
+    client:
+      clientId: myClientId
+      clientSecret: iskech
+      userAuthorizationUri: http://localhost:8100/oauth/authorize
+      grant-type: password
+      scope: webClient
+      access-token-uri: http://localhost:8100/oauth/token
+    resource:
+      userInfoUri: http://localhost:8100/user
+    authorization:
+      check-token-access: http://localhost:8100/oauth/check_token
+server:
+  port: 8200
