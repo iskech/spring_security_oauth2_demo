@@ -26,7 +26,11 @@ public class UserServiceImpl implements UserService {
 	@PostConstruct
 	@Override
 	public CustomUser initUser() {
-		CustomUser iskech = userRepository.save(new CustomUser("iskech", passwordEncoder.encode("123")));
-		return iskech;
+		CustomUser iskechOld = userRepository.findByusername("iskech");
+		if (iskechOld == null) {
+			CustomUser iskech = userRepository.save(new CustomUser("iskech", passwordEncoder.encode("123")));
+			return iskech;
+		}
+		return null;
 	}
 }
