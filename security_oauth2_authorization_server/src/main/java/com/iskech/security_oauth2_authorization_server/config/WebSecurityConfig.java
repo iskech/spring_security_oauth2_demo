@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.iskech.security_oauth2_authorization_server.service.impl.user.CustomUserDetails;
 
 /**
  * @author ：liujx
@@ -20,23 +24,36 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-  @Autowired
-  private BCryptPasswordEncoder passwordEncoder;
-  
+  @Autowired private BCryptPasswordEncoder passwordEncoder;
+  @Autowired private CustomUserDetails userDetailsService;
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     // 配置加载用户的方式 (内存，jdbc,ldap)
-    auth.inMemoryAuthentication()
-        .withUser("iskech")
-        .password(passwordEncoder.encode("123"))
-        .roles("admin", "user")
-        .and()
-        .withUser("ljs")
-        .password("123")
-        .roles("user");
-    
+    auth.authenticationProvider(daoAuthenticationProvider());
+
+    /*auth.inMemoryAuthentication()
+    .withUser("iskech")
+    .password(passwordEncoder.encode("123"))
+    .roles("admin", "user")
+    .and()
+    .withUser("ljs")
+    .password("123")
+    .roles("user");*/
   }
-  
+
+  @Bean
+  public AuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+    daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+    // 用户未找到异常隐藏禁用
+    daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+    // 解码
+     daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+
+    return daoAuthenticationProvider;
+  }
+
   @Override
   public UserDetailsService userDetailsServiceBean() throws Exception {
     return super.userDetailsServiceBean();
@@ -44,16 +61,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-        .antMatchers("/users")
-        .permitAll();
-
-  
+    http.authorizeRequests().antMatchers("/users").permitAll();
   }
-  
+
   @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
   @Override
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
+  
+  
 }

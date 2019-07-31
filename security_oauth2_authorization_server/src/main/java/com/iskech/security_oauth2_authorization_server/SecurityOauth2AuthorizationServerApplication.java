@@ -7,9 +7,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @SpringBootApplication
 @EnableAuthorizationServer
 public class SecurityOauth2AuthorizationServerApplication {
-
-    public static void main(String[] args) {
-        SpringApplication.run(SecurityOauth2AuthorizationServerApplication.class, args);
-    }
-
+	
+	public static void main(String[] args) {
+		SpringApplication.run(SecurityOauth2AuthorizationServerApplication.class, args);
+	}
+	
 }
