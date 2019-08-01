@@ -39,5 +39,8 @@
             </plugin>
         </plugins>
     </build>
-
+    <modules>
+        <module>security_oauth2_authorization_server</module>
+        <module>security_oauth2_recource_server</module>
+    </modules>
 </project>
