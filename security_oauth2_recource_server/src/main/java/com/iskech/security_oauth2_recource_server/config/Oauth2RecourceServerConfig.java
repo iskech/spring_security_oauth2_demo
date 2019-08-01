@@ -9,8 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.*;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
@@ -41,7 +40,7 @@ public class Oauth2RecourceServerConfig extends ResourceServerConfigurerAdapter 
      * 访问认证服务认证该token
      * @return
      */
-   /* @Bean
+    @Bean
     public ResourceServerTokenServices tokenServices() {
         //读取yml配置的autht2端点及密钥，客户端id等
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
@@ -55,13 +54,14 @@ public class Oauth2RecourceServerConfig extends ResourceServerConfigurerAdapter 
     @Bean
     public AccessTokenConverter accessTokenConverter() {
         return new DefaultAccessTokenConverter();
-    }*/
-
+    }
     @Bean
     public AuthorizationServerProperties authorizationServerProperties() throws Exception {
         return new AuthorizationServerProperties();
     }
-    
+   /*
+
+
     @Override
     public void configure(final ResourceServerSecurityConfigurer config) {
         config.tokenServices(tokenServices());
@@ -86,6 +86,6 @@ public class Oauth2RecourceServerConfig extends ResourceServerConfigurerAdapter 
         final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
         return defaultTokenServices;
-    }
+    }*/
 
 }

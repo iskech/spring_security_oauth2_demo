@@ -4,14 +4,18 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3307/security_oauth2?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/security_oauth2?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 123456
     schema: classpath:db.mysql/V1.0__user_init_table.sql
     initialization-mode: always
 
-
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+  redis:
+    database: 1
+    port: 6379
+    password: cnware
+    host: localhost

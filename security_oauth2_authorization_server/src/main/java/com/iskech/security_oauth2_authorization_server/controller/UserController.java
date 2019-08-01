@@ -1,10 +1,22 @@
 package com.iskech.security_oauth2_authorization_server.controller;
 
+import com.iskech.security_oauth2_authorization_server.util.RedisUtil;
+import com.iskech.security_oauth2_authorization_server.util.RedisUtils;
+import netscape.security.Principal;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.http.HttpRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,11 +30,31 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-  @GetMapping
-  public Map<String, Object> user(OAuth2Authentication oAuth2Authentication) {
-    Map<String, Object> map = new HashMap<>();
-    map.put("user", oAuth2Authentication.getUserAuthentication().getPrincipal());
-    map.put("authorities", oAuth2Authentication.getUserAuthentication().getAuthorities());
-    return map;
-  }
+    @Autowired
+    TokenStore tokenStore;
+    @Autowired
+    RedisUtils redisUtils;
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_TOKEN_TYPE = "Bearer";
+
+
+    @GetMapping
+    public Map<String, Object> getExtraInfo(HttpServletRequest request) {
+        String token = getToken(request);
+        Map<String, Object> map = new HashMap<>();
+        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
+        map.put(token, oAuth2AccessToken);
+        return map;
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String accessToken = request.getParameter("access_token");
+        if (accessToken == null) {
+            accessToken = request.getHeader("Authorization");
+            if (accessToken != null && accessToken.contains("Bearer ")) {
+                accessToken = accessToken.substring("Bearer ".length());
+            }
+        }
+        return accessToken;
+    }
 }
