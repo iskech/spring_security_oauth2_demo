@@ -49,8 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 用户未找到异常隐藏禁用
     daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
     // 解码
-     daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-
+    daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
     return daoAuthenticationProvider;
   }
 
@@ -69,6 +68,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   public AuthenticationManager authenticationManagerBean() throws Exception {
     return super.authenticationManagerBean();
   }
-  
-  
 }

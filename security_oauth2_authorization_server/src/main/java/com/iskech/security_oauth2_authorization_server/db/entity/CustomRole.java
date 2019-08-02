@@ -22,30 +22,30 @@ public class CustomRole {
 	private Long   uuid;
 	@Column
 	private String name;
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Long getUuid() {
 		return uuid;
 	}
-	
+
 	public void setUuid(Long uuid) {
 		this.uuid = uuid;
 	}
-	
+
 	public CustomRole(String name) {
 		this.name = name;
 	}
-	
+
 	public CustomRole() {
 	}
-	
+
 	public static List<GrantedAuthority> mapToGrantedAuthorities(List<CustomRole> authorities) {
 		return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
 	}

@@ -1,12 +1,14 @@
 server:
-  port: 8100
+  port: ${SERVER_PORT}
 
 spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3307/security_oauth2?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
-    username: root
-    password: 123456
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_DATABASE_NAME:security_oauth2}?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
     schema: classpath:db.mysql/V1.0__user_init_table.sql
     initialization-mode: embedded
 
@@ -15,6 +17,8 @@ spring:
       ddl-auto: update
     show-sql: true
   redis:
-    database: 1
-    port: 6379
-    host: localhost
+    database: ${REDIS_DATABASE_NAME:0}
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:123456}
+

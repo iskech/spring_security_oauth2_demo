@@ -1,15 +1,13 @@
 package com.iskech.security_oauth2_authorization_server.controller;
 
-import com.iskech.security_oauth2_authorization_server.util.RedisUtils;
+import com.iskech.security_oauth2_authorization_server.service.UserService;
+import com.iskech.security_oauth2_authorization_server.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,31 +20,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    TokenStore tokenStore;
-    @Autowired
-    RedisUtils redisUtils;
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_TOKEN_TYPE = "Bearer";
+  @Autowired private UserService userService;
 
-
-    @GetMapping
-    public Map<String, Object> getExtraInfo(HttpServletRequest request) {
-        String token = getToken(request);
-        Map<String, Object> map = new HashMap<>();
-        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
-        map.put(token, oAuth2AccessToken);
-        return map;
-    }
-
-    private String getToken(HttpServletRequest request) {
-        String accessToken = request.getParameter("access_token");
-        if (accessToken == null) {
-            accessToken = request.getHeader("Authorization");
-            if (accessToken != null && accessToken.contains("Bearer ")) {
-                accessToken = accessToken.substring("Bearer ".length());
-            }
-        }
-        return accessToken;
-    }
+  /**
+   * 获取用户信息
+   *
+   * @param request
+   * @return
+   */
+  @GetMapping
+  public Map<String, Object> getUserInfo(HttpServletRequest request) {
+    String token = TokenUtils.getToken(request);
+    return userService.parseUserInfoFromToken(token);
+  }
 }
