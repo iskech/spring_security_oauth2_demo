@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -16,8 +17,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.util.Arrays;
 
@@ -42,7 +42,7 @@ public class Oauth2OConfig extends AuthorizationServerConfigurerAdapter {
         .inMemory()
         .withClient("myClientId")
         .secret(passwordEncoder().encode("iskech"))
-        .authorizedGrantTypes("password", "client_credentials")
+        .authorizedGrantTypes("password", "client_credentials","refresh_token")
         .scopes("webClient", "mobileClient");
   }
 
@@ -53,10 +53,10 @@ public class Oauth2OConfig extends AuthorizationServerConfigurerAdapter {
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     // 授权端点相关配置
     final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-    tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+    tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer()));
     endpoints
         .tokenStore(tokenStore())
-        .accessTokenConverter(accessTokenConverter())
+      //  .accessTokenConverter(accessTokenConverter())
         .authenticationManager(authenticationManager)
         .userDetailsService(userDetailsService);
   }
@@ -80,7 +80,7 @@ public class Oauth2OConfig extends AuthorizationServerConfigurerAdapter {
     return defaultTokenServices;
   }
 
-  @Bean
+ /* @Bean
   public TokenStore tokenStore() {
     return new JwtTokenStore(accessTokenConverter());
   }
@@ -94,7 +94,7 @@ public class Oauth2OConfig extends AuthorizationServerConfigurerAdapter {
     // ClassPathResource("mytest.jks"), "mypass".toCharArray());
     // converter.setKeyPair(keyStoreKeyFactory.getKeyPair("mytest"));
     return converter;
-  }
+  }*/
 
   @Bean
   public TokenEnhancer tokenEnhancer() {
@@ -108,19 +108,11 @@ public class Oauth2OConfig extends AuthorizationServerConfigurerAdapter {
 
   // redis token store configuration
 
-  /*@Autowired
+  @Autowired
   private RedisConnectionFactory connectionFactory;
-  @Bean
-  @Primary
-  public DefaultTokenServices tokenServices() {
-      final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-      defaultTokenServices.setTokenStore(tokenStore());
-      defaultTokenServices.setSupportRefreshToken(true);
-      return defaultTokenServices;
-  }
   @Bean
   public TokenStore tokenStore() {
       return new RedisTokenStore(connectionFactory);
-  }*/
+  }
 
 }

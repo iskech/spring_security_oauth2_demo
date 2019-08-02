@@ -59,8 +59,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/users").permitAll();
+  protected void configure(final HttpSecurity http) throws Exception {
+    // @formatter:off
+    http.authorizeRequests()
+        .antMatchers("/login")
+        .permitAll()
+        .antMatchers("/users/**")
+        .permitAll()
+        .antMatchers("/tokens/**")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .permitAll()
+        .and()
+        .csrf()
+        .disable();
+    // @formatter:on
   }
 
   @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
