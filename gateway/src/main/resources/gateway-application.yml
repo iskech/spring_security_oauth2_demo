@@ -1,0 +1,44 @@
+spring:
+  redis:
+    database: 0
+    host: ${REDIS_HOST:localhost}
+    port: ${REIDS_PORT:6379}
+    password: ${REDIS_PASSWORD:cnware}
+    timeout: 6000
+zuul:
+  host: 
+    connect-timeout-millis: 30000
+    socket-timeout-millis: 60000
+  routes:
+    auth: /auth/**
+
+    
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 300000
+            
+ribbon:
+  ConnectTimeout: 60000
+  ReadTimeout: 60000
+  
+
+
+security:
+  oauth2:
+    client:
+      clientId: myClientId
+      clientSecret: iskech
+      userAuthorizationUri: http://localhost:8100/oauth/authorize
+      grant-type: password
+      scope: webClient
+      access-token-uri: http://localhost:8100/oauth/token
+      clientAuthenticationScheme: header
+    resource:
+      userInfoUri: http://localhost:8100/user
+    authorization:
+      check-token-access: http://localhost:8100/oauth/check_token
+

@@ -1,0 +1,12 @@
+#Whether open swaggers
+swaggerShow: true
+
+#streamKey
+streamKey: defaultKey
+
+AUTH_HOST: http://192.168.205.213:8090
+UAP_HOST: 192.168.217.22
+WEB_HOST: 192.168.205.213
+WEB_PORT: 443
+SYSTEM_ID: winsphere3.1
+SYSTEM_NAME: WinSphere3.1

@@ -1,0 +1,21 @@
+server:
+  port: 9000
+
+http:
+  port: 8080
+
+
+spring:
+  application:
+    name: gateway
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_USERNAME:admin}:${EUREKA_PASSWORD:admin}@${EUREKA_HOST:localhost}:8761/eureka
+      healthcheck:
+        enabled: true
+  instance:
+    prefer-ip-address: true
+    instance-id: iskech-service-${spring.application.name}@${spring.cloud.client.ipAddress}:${server.port}
