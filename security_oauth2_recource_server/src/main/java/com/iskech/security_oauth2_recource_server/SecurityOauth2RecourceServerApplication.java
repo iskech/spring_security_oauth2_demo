@@ -2,10 +2,12 @@ package com.iskech.security_oauth2_recource_server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @SpringBootApplication
 @EnableResourceServer
+@EnableDiscoveryClient
 public class SecurityOauth2RecourceServerApplication {
 
     public static void main(String[] args) {

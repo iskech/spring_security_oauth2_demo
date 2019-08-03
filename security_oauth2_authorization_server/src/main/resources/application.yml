@@ -22,3 +22,13 @@ spring:
     port: ${REDIS_PORT:6379}
     password: ${REDIS_PASSWORD:123456}
 
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_USERNAME:admin}:${EUREKA_PASSWORD:admin}@${EUREKA_HOST:localhost}:8761/eureka
+      healthcheck:
+        enabled: true
+  instance:
+    prefer-ip-address: true
+    instance-id: iskech-service-${spring.application.name}@${spring.cloud.client.ipAddress}:${server.port}

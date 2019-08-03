@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
     </properties>
 
     <dependencies>
@@ -42,5 +43,6 @@
     <modules>
         <module>security_oauth2_authorization_server</module>
         <module>security_oauth2_recource_server</module>
+        <module>eureka</module>
     </modules>
 </project>
