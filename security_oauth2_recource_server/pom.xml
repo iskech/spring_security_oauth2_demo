@@ -6,7 +6,8 @@
         <groupId>com.iksech</groupId>
         <artifactId>parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../pom.xml</relativePath>
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com.iskech</groupId>
     <artifactId>security_oauth2_resouce_server</artifactId>

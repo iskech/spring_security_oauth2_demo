@@ -1,3 +1,4 @@
+/*
 package com.iskech.gateway.filter;
 
 import com.iskech.gateway.util.Oauth2Utils;
@@ -64,14 +65,16 @@ public class GatewayFilter extends ZuulFilter {
 			context.setSendZuulResponse(false);
 			context.setResponseStatusCode(401);
 		}
-       /* if (accessToken != null && !"".equals(accessToken)) {
+       */
+/* if (accessToken != null && !"".equals(accessToken)) {
 		    try {
 				UserOnlineResponse userInfo = (UserOnlineResponse) redisUtil.get("user_online:"+accessToken);
                 setUserHeader(context, userInfo);
             }catch (Exception e){
 
             }
-        }*/
+        }*//*
+
 
 		return null;
 	}
@@ -121,3 +124,4 @@ public class GatewayFilter extends ZuulFilter {
 	}
 
 }
+*/
